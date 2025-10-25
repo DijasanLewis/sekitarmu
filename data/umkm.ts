@@ -1,53 +1,74 @@
-// data/umkm.ts
+// Ganti Tipe Kategori
+export type Category = "Kuliner" | "Jasa" | "Komputer" | "Fasion";
 
-// Tipe Kategori (GANTI INI)
-export type Category = "Makanan" | "Minuman" | "Jasa";
-
-// Tipe Data UMKM
 export interface UMKM {
   id: string;
   name: string;
   description: string;
   category: Category;
-  image: string; // URL ke gambar
+  image: string;
 }
 
-// Daftar UMKM (GANTI INI)
+// Ganti Daftar UMKM
 export const UMKM_LIST: UMKM[] = [
   {
     id: "1",
     name: "Bakso Legendaris Pak Kumis",
-    description: "Bakso urat sapi asli dengan kuah kaldu yang kaya rasa.",
-    category: "Makanan", // Ganti dari Kuliner
+    description: "Bakso urat sapi asli.",
+    category: "Kuliner", // Ganti
     image: "https://via.placeholder.com/300x200?text=Bakso",
   },
   {
     id: "2",
     name: "Kopi Senja",
-    description: "Warung kopi modern dengan biji kopi pilihan nusantara.",
-    category: "Minuman", // Ganti dari Kuliner
+    description: "Warung kopi modern.",
+    category: "Kuliner", // Ganti
     image: "https://via.placeholder.com/300x200?text=Kopi",
   },
   {
     id: "3",
     name: "Cukur Rambut 'Rapih'",
-    description: "Jasa pangkas rambut pria dengan gaya terbaru.",
+    description: "Jasa pangkas rambut pria.",
     category: "Jasa",
     image: "https://via.placeholder.com/300x200?text=Barber",
   },
-  // Hapus/ganti data fashion dan laundry agar sesuai
+  // Tambahkan data baru
+  {
+    id: "4",
+    name: "Service Laptop Cepat",
+    description: "Perbaikan laptop dan PC.",
+    category: "Komputer",
+    image: "https://via.placeholder.com/300x200?text=Servis+Laptop",
+  },
+  {
+    id: "5",
+    name: "Jahit Seragam Rapi",
+    description: "Jasa jahit dan taylor.",
+    category: "Fasion",
+    image: "https://via.placeholder.com/300x200?text=Jahit",
+  },
+  {
+    id: "6",
+    name: "Bubur Ayam Enak",
+    description: "Bubur ayam spesial.",
+    category: "Kuliner",
+    image: "https://via.placeholder.com/300x200?text=Bubur+Ayam",
+  },
+  {
+    id: "7",
+    name: "Fotocopy Murah",
+    description: "Jasa fotocopy dan ATK.",
+    category: "Jasa",
+    image: "https://via.placeholder.com/300x200?text=Fotocopy",
+  }
 ];
 
-// Fungsi Pencarian
+// Fungsi Pencarian (tetap sama)
 export function searchUMKM(query: string, category: Category | "Semua"): UMKM[] {
   let results = [...UMKM_LIST];
-
-  // Filter berdasarkan kategori
   if (category !== "Semua") {
     results = results.filter((item) => item.category === category);
   }
-
-  // Filter berdasarkan query pencarian
   if (query.trim() !== "") {
     const lowerCaseQuery = query.toLowerCase();
     results = results.filter((item) =>
@@ -55,6 +76,5 @@ export function searchUMKM(query: string, category: Category | "Semua"): UMKM[] 
       item.description.toLowerCase().includes(lowerCaseQuery)
     );
   }
-
   return results;
 }
