@@ -14,7 +14,7 @@ export default function RootLayout({  children,}: Readonly<{
           <nav>
             <ul>
               <li>
-                <Link href="/listumkm">List UMKM</Link>
+                <Link href="/">Beranda</Link>
               </li>
             </ul>
           </nav>

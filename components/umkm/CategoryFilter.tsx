@@ -1,8 +1,37 @@
 "use client";
+
+/**
+ * CategoryFilter - Komponen filter untuk memilih kategori UMKM
+ * 
+ * Komponen ini menampilkan tombol-tombol filter untuk memilih kategori UMKM.
+ * Pengguna dapat memilih kategori tertentu atau "Semua" untuk melihat semua kategori.
+ * 
+ * Cara kerja:
+ * 1. Menampilkan daftar kategori yang tersedia
+ * 2. Kategori yang dipilih akan ditandai dengan style berbeda
+ * 3. Ketika kategori diklik, memanggil fungsi onChange dengan kategori yang dipilih
+ */
+
 import type { Category } from "@/data/umkm";
 
-// GANTI DAFTAR KATEGORI INI
-const CATEGORIES: (Category | "Semua")[] = ["Semua", "Kuliner", "Jasa", "Komputer", "Fasion"];
+// Daftar kategori yang tersedia (termasuk opsi "Semua")
+const CATEGORIES: (Category | "Semua")[] = [
+  "Semua",
+  "Makanan",
+  "Minuman",
+  "Jasa",
+  "Fashion",
+  "Elektronik",
+  "Kerajinan Tangan",
+  "Kesehatan & Kecantikan",
+  "Olahraga",
+  "Kendaraan & Aksesoris",
+  "Perabot Rumah Tangga",
+  "Buku & Alat Tulis",
+  "Hobi & Kerajinan",
+  "Pertanian & Kehutanan",
+  "Konstruksi & Bangunan"
+];
 
 interface Props {
   value: Category | "Semua";
