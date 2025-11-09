@@ -23,7 +23,10 @@ export default function HomeUMKMCard({ item }: Props) {
   return (
     // 1. Kontainer kartu: relative, tinggi tetap (h-72), rounded, dan overflow-hidden
     // 'group' digunakan untuk efek hover pada gambar
-    <div className="relative w-full h-72 rounded-lg overflow-hidden shadow-lg group border border-border">
+    <Link
+      href={`/umkm/${item.id}`}
+      className="relative w-full h-72 rounded-lg overflow-hidden shadow-lg group border border-border"
+    >
       
       {/* 2. Gambar Background (Mirip di header) */}
       <Image
@@ -41,28 +44,27 @@ export default function HomeUMKMCard({ item }: Props) {
       <div className="relative z-10 h-full flex flex-col justify-end p-4 text-white">
         
         {/* 5. Badge Kategori (Styling dari header) */}
-        <span className="inline-block rounded-full px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground mb-2 self-start">
+        <span className="inline-block rounded-full px-2 md:px-3 py-1 text-[8px] md:text-xs font-semibold bg-primary text-primary-foreground mb-2 self-start">
           {item.category}
         </span>
         
         {/* 6. Nama UMKM (Styling dari header, dikecilkan) */}
-        <h3 className="text-xl font-bold text-white drop-shadow-md">
+        <h3 className="text-sm md:text-xl font-bold text-white drop-shadow-md truncate">
           {item.name}
         </h3>
         
         {/* 7. Deskripsi (Styling dari header, dikecilkan + line-clamp) */}
-        <p className="text-sm text-white/90 line-clamp-2 mt-1 drop-shadow-md">
+        <p className="hidden md:block text-sm text-white/90 line-clamp-2 mt-1 drop-shadow-md truncate">
           {item.description}
         </p>
         
         {/* 8. Tombol "Lihat" (Sesuai permintaan Anda) */}
-        <Link
-          href={`/umkm/${item.id}`}
-          className="mt-1 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90"
+        <span
+          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
         >
           Lihat
-        </Link>
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -35,35 +35,48 @@ export default function SearchHeroSection() {
   };
 
   return (
-    <section className="w-full py-16 px-4 text-center">
-      <h1 className="text-4xl font-bold mb-3">Di SekitarMu jualan apa aja ya?</h1>
-      <p className="text-muted-foreground mb-6">
-        Yuk cari yang kamu butuhin siapa tau ada di sekitar sini.
-      </p>
+    // 1. Tambahkan 'relative' dan class untuk background image
+    <section 
+      className="relative w-full py-16 px-4 text-center bg-cover bg-center"
+      // 2. Path ke gambar Anda (harus ada di public/home/img/Ornamen.png)
+      style={{ backgroundImage: "url('/home/img/Ornamen.png')" }}
+    >
+      {/* 3. Tambahkan overlay gelap di belakang konten */}
+      <div className="absolute inset-0 bg-black/10 z-0" />
       
-      {/* Form pencarian */}
-      <form 
-        onSubmit={handleSearchSubmit} 
-        className="max-w-xl mx-auto p-4 rounded-lg bg-card border-4 border-primary shadow-lg"
-      >
-        <div className="relative flex">
-          {/* Input field untuk query pencarian */}
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Cari Produk atau Toko..."
-            className="flex-grow h-12 px-4 rounded-l-md border border-border bg-input focus:outline-none"
-          />
-          {/* Tombol submit pencarian */}
-          <button
-            type="submit"
-            className="h-12 px-6 rounded-r-md bg-primary text-primary-foreground font-bold hover:bg-primary/90"
-          >
-            Cari
-          </button>
-        </div>
-      </form>
+      {/* 4. Buat konten memiliki 'relative z-10' agar di atas overlay */}
+      <div className="relative z-10">
+        
+        {/* 5. Ubah warna teks menjadi putih dan tambahkan drop-shadow */}
+        <h1 className="text-4xl font-bold mb-3 text-white drop-shadow-md">
+          Di SekitarMu jualan apa aja ya?
+        </h1>
+        <p className="text-white/90 mb-6 drop-shadow-md">
+          Yuk cari yang kamu butuhin siapa tau ada di sekitar sini.
+        </p>
+        
+        {/* Form pencarian tidak perlu diubah, 'bg-card' sudah bagus */}
+        <form 
+          onSubmit={handleSearchSubmit} 
+          className="max-w-xl mx-auto p-4 rounded-lg bg-card border-4 border-primary shadow-lg"
+        >
+          <div className="relative flex">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Cari Produk atau Toko..."
+              className="flex-grow h-12 px-4 rounded-l-md border border-border bg-input focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="h-12 px-6 rounded-r-md bg-primary text-primary-foreground font-bold hover:bg-primary/90"
+            >
+              Cari
+            </button>
+          </div>
+        </form>
+      </div>
     </section>
   );
 }

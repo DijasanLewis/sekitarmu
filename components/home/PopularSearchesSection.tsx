@@ -38,7 +38,7 @@ export default function PopularSearchesSection() {
       <h2 className="text-2xl font-bold mb-6">Yuk dicek ada nggak yang kamu cari?</h2>
       
       {/* 3. Ubah grid-cols-4 menjadi grid-cols-3 dan max-w-4xl menjadi 7xl */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
         {items.map(product => {
           // Cari UMKM yang memiliki produk ini
           const umkmWithProduct = UMKM_LIST.find(umkm => 

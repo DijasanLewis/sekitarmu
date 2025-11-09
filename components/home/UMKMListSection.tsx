@@ -30,7 +30,7 @@ export default function UMKMListSection() {
       <h2 className="text-2xl font-bold mb-6">Mau tau daftar UMKM yang ada di sekitar sini?</h2>
       
       {/* Ubah grid-cols-4 menjadi grid-cols-3 dan max-w-4xl menjadi 7xl */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
         {items.map(umkm => (
           // 2. Ganti menjadi HomeUMKMCard
           <HomeUMKMCard 
