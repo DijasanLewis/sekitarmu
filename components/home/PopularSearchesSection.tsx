@@ -9,60 +9,56 @@
  * 
  * Cara kerja:
  * 1. Mengambil semua produk dari semua UMKM di UMKM_LIST
- * 2. Menampilkan 4 produk pertama secara default
+ * 2. Menampilkan 3 produk pertama secara default
  * 3. Ketika tombol expand diklik, menampilkan semua produk
  * 4. Setiap kartu menampilkan produk yang dapat diklik untuk melihat detail (jika diperlukan)
  */
 
 import { useState, useMemo } from 'react';
-import SimpleCard from './SimpleCard';
+import HomeProductCard from './HomeProductCard';
 import ExpandToggleButton from './ExpandToggleButton';
 import { UMKM_LIST } from '@/data/umkm';
 
 export default function PopularSearchesSection() {
-  // State untuk mengontrol apakah section sudah di-expand atau belum
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Mengambil semua produk dari semua UMKM dan membuat daftar unik berdasarkan nama produk
   const products = useMemo(() => {
     const allProducts = UMKM_LIST.flatMap(umkm => umkm.products);
-    // Menghilangkan duplikat berdasarkan nama produk
     const uniqueProducts = Array.from(
       new Map(allProducts.map(product => [product.productName, product])).values()
     );
     return uniqueProducts;
   }, []);
   
-  // Menentukan item yang akan ditampilkan: semua produk jika expanded, 4 produk pertama jika belum
-  const items = isExpanded ? products : products.slice(0, 4);
+  // 2. Ubah slice(0, 4) menjadi (0, 3) untuk default 3 item
+  const items = isExpanded ? products : products.slice(0, 3);
 
   return (
     <section id="popular-searches" className="w-full py-12 px-4 text-center bg-muted">
       <h2 className="text-2xl font-bold mb-6">Yuk dicek ada nggak yang kamu cari?</h2>
       
-      {/* Grid untuk menampilkan kartu pencarian populer */}
-      <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* 3. Ubah grid-cols-4 menjadi grid-cols-3 dan max-w-4xl menjadi 7xl */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         {items.map(product => {
           // Cari UMKM yang memiliki produk ini
           const umkmWithProduct = UMKM_LIST.find(umkm => 
             umkm.products.some(p => p.productId === product.productId)
           );
           
-          // Jika ditemukan UMKM, arahkan ke detail UMKM, jika tidak, tidak ada link
-          const href = umkmWithProduct ? `/umkm/${umkmWithProduct.id}` : '#';
-          
+          // 4. Ganti <SimpleCard> dengan <HomeProductCard>
+          // Kirim prop 'product' dan 'umkm' ke kartu
           return (
-            <SimpleCard 
+            <HomeProductCard 
               key={product.productId} 
-              title={product.productName} 
-              href={href}
+              product={product}
+              umkm={umkmWithProduct}
             />
           );
         })}
       </div>
       
-      {/* Tombol untuk expand/collapse section - hanya ditampilkan jika ada lebih dari 4 produk */}
-      {products.length > 4 && (
+      {/* 5. Ubah kondisi > 4 menjadi > 3 */}
+      {products.length > 3 && (
         <ExpandToggleButton 
           onClick={() => setIsExpanded(!isExpanded)} 
           isExpanded={isExpanded} 

@@ -15,34 +15,33 @@
  */
 
 import { useState } from 'react';
-import SimpleCard from './SimpleCard';
+import HomeUMKMCard from './HomeUMKMCard';
 import ExpandToggleButton from './ExpandToggleButton';
 import { UMKM_LIST } from '@/data/umkm';
 
 export default function UMKMListSection() {
-  // State untuk mengontrol apakah section sudah di-expand atau belum
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Menentukan item yang akan ditampilkan: semua UMKM jika expanded, 4 UMKM pertama jika belum
-  const items = isExpanded ? UMKM_LIST : UMKM_LIST.slice(0, 4);
+  // Ubah slice(0, 4) menjadi (0, 3) untuk default 3 item
+  const items = isExpanded ? UMKM_LIST : UMKM_LIST.slice(0, 3);
 
   return (
     <section id="umkm-list" className="w-full py-12 px-4 text-center bg-muted">
       <h2 className="text-2xl font-bold mb-6">Mau tau daftar UMKM yang ada di sekitar sini?</h2>
       
-      {/* Grid untuk menampilkan kartu nama UMKM */}
-      <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Ubah grid-cols-4 menjadi grid-cols-3 dan max-w-4xl menjadi 7xl */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         {items.map(umkm => (
-          <SimpleCard 
+          // 2. Ganti menjadi HomeUMKMCard
+          <HomeUMKMCard 
             key={umkm.id} 
-            title={umkm.name} 
-            href={`/umkm/${umkm.id}`} 
+            item={umkm} 
           />
         ))}
       </div>
       
-      {/* Tombol untuk expand/collapse section - hanya ditampilkan jika ada lebih dari 4 UMKM */}
-      {UMKM_LIST.length > 4 && (
+      {/* Ubah kondisi > 4 menjadi > 3 */}
+      {UMKM_LIST.length > 3 && (
         <ExpandToggleButton 
           onClick={() => setIsExpanded(!isExpanded)} 
           isExpanded={isExpanded} 
