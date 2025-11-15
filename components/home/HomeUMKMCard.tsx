@@ -9,6 +9,7 @@
 import type { UMKM } from "@/data/umkm";
 import Image from "next/image";
 import Link from "next/link";
+import CategoryDisplay from "@/components/umkm/CategoryDisplay";
 
 interface Props {
   item: UMKM;
@@ -44,9 +45,10 @@ export default function HomeUMKMCard({ item }: Props) {
       <div className="relative z-10 h-full flex flex-col justify-end p-4 text-white">
         
         {/* 5. Badge Kategori (Styling dari header) */}
-        <span className="inline-block rounded-full px-2 md:px-3 py-1 text-[8px] md:text-xs font-semibold bg-primary text-primary-foreground mb-2 self-start">
-          {item.category}
+        <span className="mb-2">
+          <CategoryDisplay categories={item.category} />
         </span>
+        
         
         {/* 6. Nama UMKM (Styling dari header, dikecilkan) */}
         <h3 className="text-sm md:text-xl font-bold text-white drop-shadow-md truncate">

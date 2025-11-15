@@ -14,6 +14,7 @@
 
 import type { UMKM } from '@/data/umkm';
 import Link from 'next/link';
+import CategoryDisplay from './CategoryDisplay';
 
 interface Props {
   umkm: UMKM;
@@ -58,9 +59,7 @@ export default function UMKMDetailInfo({ umkm }: Props) {
       <div className="space-y-4">
         <div>
           <h3 className="font-semibold text-sm text-muted-foreground mb-1">Kategori</h3>
-          <span className="inline-block rounded-full px-3 py-1 text-sm font-medium bg-secondary text-secondary-foreground">
-            {umkm.category}
-          </span>
+          <CategoryDisplay categories={umkm.category} />
         </div>
         
         {umkm.website && (

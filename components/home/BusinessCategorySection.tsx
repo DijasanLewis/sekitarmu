@@ -74,7 +74,7 @@ export default function BusinessCategorySection() {
       <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
         {items.map(category => {
           // Cari UMKM pertama dengan kategori ini
-          const umkmWithCategory = UMKM_LIST.find(umkm => umkm.category === category);
+          const umkmWithCategory = UMKM_LIST.find(umkm => umkm.category.includes(category));
           // Jika ditemukan, arahkan ke detail UMKM, jika tidak, scroll ke UMKMListSection
           const href = umkmWithCategory ? `/umkm/${umkmWithCategory.id}` : '#umkm-list';
           

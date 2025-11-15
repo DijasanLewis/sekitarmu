@@ -4,20 +4,23 @@
  * Halaman ini menampilkan detail lengkap dari sebuah UMKM berdasarkan ID.
  * Menggunakan dynamic route [id] untuk mendapatkan ID UMKM dari URL.
  * 
+ * Layout terdiri dari 3 section:
+ * 1. Hero section: gambar cover, informasi UMKM, dan Google Maps
+ * 2. Daftar produk toko: menampilkan semua produk yang dijual
+ * 3. SupportUMKMSection: call-to-action untuk mendukung UMKM
+ * 
  * Cara kerja:
  * 1. Mengambil ID UMKM dari parameter URL
  * 2. Mencari UMKM dengan ID tersebut di UMKM_LIST
- * 3. Menampilkan semua informasi UMKM: nama, deskripsi, kategori, gambar, 
- *    alamat, kontak, produk, dll
+ * 3. Menampilkan semua informasi UMKM sesuai layout baru
  * 4. Jika UMKM tidak ditemukan, menampilkan pesan error
  */
 
 import { notFound } from 'next/navigation';
 import { UMKM_LIST } from '@/data/umkm';
 import UMKMDetailHeader from '@/components/umkm/UMKMDetailHeader';
-import UMKMDetailInfo from '@/components/umkm/UMKMDetailInfo';
 import UMKMProductList from '@/components/umkm/UMKMProductList';
-import UMKMContactSection from '@/components/umkm/UMKMContactSection';
+import SupportUMKMSection from '@/components/home/SupportUMKMSection';
 
 interface PageProps {
   params: {
@@ -36,23 +39,16 @@ export default function UMKMDetailPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Header dengan gambar dan informasi utama */}
+      {/* Section a: Hero dengan gambar cover, informasi UMKM, dan Google Maps */}
       <UMKMDetailHeader umkm={umkm} />
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Kolom kiri: Informasi detail dan kontak */}
-          <div className="lg:col-span-1 space-y-6">
-            <UMKMDetailInfo umkm={umkm} />
-            <UMKMContactSection umkm={umkm} />
-          </div>
-          
-          {/* Kolom kanan: Daftar produk */}
-          <div className="lg:col-span-2">
-            <UMKMProductList products={umkm.products} />
-          </div>
-        </div>
+      {/* Section b: Daftar produk toko */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <UMKMProductList products={umkm.products} />
       </div>
+      
+      {/* Section c: SupportUMKMSection */}
+      <SupportUMKMSection />
     </main>
   );
 }

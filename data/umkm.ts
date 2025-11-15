@@ -37,7 +37,7 @@ export interface UMKM {
     id: string;                   // ID unik untuk UMKM
     name: string;                 // Nama UMKM
     description: string;          // Deskripsi singkat mengenai UMKM
-    category: Category;           // Kategori UMKM (misalnya, Makanan, Jasa, dll)
+    category: Category[];         // Array kategori UMKM (misalnya, [Makanan, Minuman], karena 1 toko bisa menyediakan produk berbeda)
     googleMapsUrl: string;        // URL ke lokasi UMKM di Google Maps
     imageUrls: string[];           // Array URL gambar UMKM (bisa lebih dari satu gambar)
     address: string;              // Alamat lengkap UMKM
@@ -55,7 +55,7 @@ export const UMKM_LIST: UMKM[] = [
     id: "1",
     name: "Bakso Legendaris Pak Kumis",
     description: "Bakso urat sapi asli.",
-    category: "Makanan",
+    category: ["Makanan"],
     googleMapsUrl: "https://maps.google.com/?q=Bakso+Legendaris+Pak+Kumis",
     imageUrls: ["https://via.placeholder.com/300x200?text=Bakso"],
     address: "Jl. Raya Contoh No. 123, Jakarta",
@@ -77,8 +77,8 @@ export const UMKM_LIST: UMKM[] = [
   {
     id: "2",
     name: "Kopi Senja",
-    description: "Warung kopi modern.",
-    category: "Minuman",
+    description: "Warung kopi modern dengan makanan ringan.",
+    category: ["Minuman", "Makanan", "Jasa", "Fashion"],
     googleMapsUrl: "https://maps.google.com/?q=Kopi+Senja",
     imageUrls: ["https://via.placeholder.com/300x200?text=Kopi"],
     address: "Jl. Raya Contoh No. 456, Jakarta",
@@ -93,6 +93,16 @@ export const UMKM_LIST: UMKM[] = [
         description: "Kopi hitam nikmat dengan aroma yang menggoda",
         stock: 100,
         rating: 4.8
+      },
+      {
+        productId: "p2b",
+        productName: "Roti Bakar",
+        price: 12000,
+        category: "Makanan",
+        productImage: ["https://via.placeholder.com/200x200?text=Roti+Bakar"],
+        description: "Roti bakar dengan berbagai topping",
+        stock: 50,
+        rating: 4.6
       }
     ]
   },
@@ -100,7 +110,7 @@ export const UMKM_LIST: UMKM[] = [
     id: "3",
     name: "Cukur Rambut 'Rapih'",
     description: "Jasa pangkas rambut pria.",
-    category: "Jasa",
+    category: ["Jasa"],
     googleMapsUrl: "https://maps.google.com/?q=Cukur+Rambut+Rapih",
     imageUrls: ["https://via.placeholder.com/300x200?text=Barber"],
     address: "Jl. Raya Contoh No. 789, Jakarta",
@@ -122,7 +132,7 @@ export const UMKM_LIST: UMKM[] = [
     id: "4",
     name: "Service Laptop Cepat",
     description: "Perbaikan laptop dan PC.",
-    category: "Jasa",
+    category: ["Jasa"],
     googleMapsUrl: "https://maps.google.com/?q=Service+Laptop+Cepat",
     imageUrls: ["https://via.placeholder.com/300x200?text=Servis+Laptop"],
     address: "Jl. Raya Contoh No. 321, Jakarta",
@@ -144,7 +154,7 @@ export const UMKM_LIST: UMKM[] = [
     id: "5",
     name: "Jahit Seragam Rapi",
     description: "Jasa jahit dan taylor.",
-    category: "Jasa",
+    category: ["Jasa"],
     googleMapsUrl: "https://maps.google.com/?q=Jahit+Seragam+Rapi",
     imageUrls: ["https://via.placeholder.com/300x200?text=Jahit"],
     address: "Jl. Raya Contoh No. 654, Jakarta",
@@ -166,7 +176,7 @@ export const UMKM_LIST: UMKM[] = [
     id: "6",
     name: "Bubur Ayam Enak",
     description: "Bubur ayam spesial.",
-    category: "Makanan",
+    category: ["Makanan"],
     googleMapsUrl: "https://maps.google.com/?q=Bubur+Ayam+Enak",
     imageUrls: ["https://via.placeholder.com/300x200?text=Bubur+Ayam"],
     address: "Jl. Raya Contoh No. 987, Jakarta",
@@ -188,7 +198,7 @@ export const UMKM_LIST: UMKM[] = [
     id: "7",
     name: "Fotocopy Murah",
     description: "Jasa fotocopy dan ATK.",
-    category: "Jasa",
+    category: ["Jasa"],
     googleMapsUrl: "https://maps.google.com/?q=Fotocopy+Murah",
     imageUrls: ["https://via.placeholder.com/300x200?text=Fotocopy"],
     address: "Jl. Raya Contoh No. 147, Jakarta",
@@ -203,6 +213,38 @@ export const UMKM_LIST: UMKM[] = [
         description: "Jasa fotocopy dengan harga murah dan kualitas baik",
         stock: 999,
         rating: 4.3
+      }
+    ]
+  },
+  {
+    id: "8",
+    name: "Toko Serba Ada",
+    description: "Toko lengkap dengan berbagai produk.",
+    category: ["Makanan", "Minuman", "Elektronik", "Fashion"],
+    googleMapsUrl: "https://maps.google.com/?q=Toko+Serba+Ada",
+    imageUrls: ["https://via.placeholder.com/300x200?text=Toko+Serba+Ada"],
+    address: "Jl. Raya Contoh No. 258, Jakarta",
+    phone: "+6281234567897",
+    products: [
+      {
+        productId: "p8a",
+        productName: "Snack Ringan",
+        price: 5000,
+        category: "Makanan",
+        productImage: ["https://via.placeholder.com/200x200?text=Snack"],
+        description: "Berbagai macam snack ringan",
+        stock: 200,
+        rating: 4.2
+      },
+      {
+        productId: "p8b",
+        productName: "Air Mineral",
+        price: 3000,
+        category: "Minuman",
+        productImage: ["https://via.placeholder.com/200x200?text=Air+Mineral"],
+        description: "Air mineral kemasan",
+        stock: 150,
+        rating: 4.0
       }
     ]
   }
@@ -225,7 +267,7 @@ export function searchUMKM(query: string, category: Category | "Semua"): UMKM[] 
   
   // Filter berdasarkan kategori
   if (category !== "Semua") {
-    results = results.filter((item) => item.category === category);
+    results = results.filter((item) => item.category.includes(category));
   }
   
   // Filter berdasarkan query

@@ -1,122 +1,90 @@
 # Pesan Commit
 
-## Refactor: Restrukturisasi aplikasi dan penghapusan halaman listumkm
+## Feat: Support multiple categories per UMKM dan refactor layout detail page
 
 ### Ringkasan
-Melakukan refactoring besar-besaran pada aplikasi SekitarMu dengan memisahkan komponen-komponen menjadi file terpisah, menghapus halaman listumkm yang tidak diperlukan, membuat halaman detail UMKM, dan memperbaiki navigasi aplikasi.
+Menambahkan dukungan untuk multiple categories per UMKM (dari single category menjadi array), membuat komponen CategoryDisplay untuk menampilkan kategori dengan limit 2 + badge "+X", dan melakukan refactor besar pada layout halaman detail UMKM menjadi hero section dengan Google Maps embed.
 
 ### Perubahan Utama
 
-#### 1. Restrukturisasi Komponen Halaman Utama
-- **Memisahkan komponen dari `app/page.tsx`** menjadi file-file terpisah di `components/home/`:
-  - `SearchHeroSection.tsx` - Hero section dengan search bar
-  - `PopularSearchesSection.tsx` - Section pencarian populer (menampilkan produk dari UMKM_LIST)
-  - `BusinessCategorySection.tsx` - Section kategori usaha (menampilkan kategori dari Category type)
-  - `UMKMListSection.tsx` - Section daftar UMKM (menampilkan nama UMKM dari UMKM_LIST)
-  - `SupportUMKMSection.tsx` - Section call-to-action untuk mendukung UMKM
-  - `ExpandToggleButton.tsx` - Komponen tombol expand/collapse (sebelumnya DownArrow)
-  - `SimpleCard.tsx` - Komponen kartu sederhana
-  - `CategoryCard.tsx` - Komponen kartu kategori
+#### 1. Perubahan Struktur Data Category
+- **Mengubah tipe `category` di `data/umkm.ts`**:
+  - Dari `category: Category` menjadi `category: Category[]` (array)
+  - Satu UMKM sekarang bisa memiliki multiple categories
+  - Update semua UMKM_LIST untuk menggunakan array kategori
+  - Menambahkan UMKM baru "Toko Serba Ada" dengan 4 kategori sebagai contoh
+  - Update fungsi `searchUMKM` untuk menggunakan `includes()` instead of exact match
 
-#### 2. Perubahan Struktur Data
-- **Mengubah definisi tipe data di `data/umkm.ts`**:
-  - Menambahkan tipe `Category` dengan 14 kategori lengkap
-  - Menambahkan tipe `Product` dengan field lengkap (productId, productName, price, category, productImage, description, stock, rating)
-  - Memperbarui interface `UMKM` dengan field baru (googleMapsUrl, imageUrls[], address, phone, email, website, socialMediaLinks, products[])
-  - Memperbarui `UMKM_LIST` dengan struktur data baru yang lebih lengkap
-  - Memperbarui fungsi `searchUMKM` untuk mencari di nama produk juga
+#### 2. Komponen CategoryDisplay Baru
+- **Membuat `components/umkm/CategoryDisplay.tsx`**:
+  - Komponen reusable untuk menampilkan kategori UMKM
+  - Menampilkan maksimal 2 kategori pertama sebagai badge
+  - Jika ada lebih dari 2 kategori, menampilkan badge "+X" (X = jumlah kategori lainnya)
+  - Support custom className dan badgeClassName untuk styling fleksibel
+  - Menggunakan primary color untuk kategori, secondary untuk badge "+X"
 
-#### 3. Penghapusan Halaman listumkm
-- **Menghapus folder `app/listumkm/`** dan file `page.tsx` di dalamnya
-- **Menghapus semua referensi ke `/listumkm`** di seluruh aplikasi:
-  - `SearchHeroSection.tsx` - Mengubah dari redirect ke scroll ke section PopularSearchesSection
-  - `PopularSearchesSection.tsx` - Mengubah link produk untuk mengarah ke detail UMKM
-  - `BusinessCategorySection.tsx` - Mengubah link kategori untuk mengarah ke detail UMKM pertama dengan kategori tersebut
-  - `UMKMListSection.tsx` - Menghapus link "Lihat Semua Daftar UMKM"
-  - `UMKMDetailHeader.tsx` - Menghapus breadcrumb "Daftar UMKM"
-  - `app/layout.tsx` - Mengubah link "List UMKM" menjadi "Beranda"
-  - `data/home.ts` - Memperbarui komentar (data mungkin tidak digunakan lagi)
+#### 3. Refactor Layout Halaman Detail UMKM
+- **Mengubah `app/umkm/[id]/page.tsx`**:
+  - Layout baru dengan 3 section:
+    1. Hero section: gambar cover, informasi UMKM, dan Google Maps
+    2. Daftar produk toko: menampilkan semua produk
+    3. SupportUMKMSection: call-to-action untuk mendukung UMKM
+  - Menghapus layout 2 kolom (info di kiri, produk di kanan)
+  - Menghapus UMKMDetailInfo dan UMKMContactSection dari layout utama
 
-#### 4. Pembuatan Halaman Detail UMKM
-- **Membuat halaman detail di `app/umkm/[id]/page.tsx`**:
-  - Menggunakan dynamic route `[id]` untuk mendapatkan ID UMKM
-  - Menampilkan 404 jika UMKM tidak ditemukan
-  - Layout 2 kolom: informasi di kiri, produk di kanan
+- **Mengubah `components/umkm/UMKMDetailHeader.tsx`**:
+  - Dari header sederhana menjadi hero section full-width
+  - Layout 2 kolom: informasi UMKM di kiri, Google Maps embed di kanan
+  - Gambar cover sebagai background dengan overlay gradient
+  - Menambahkan fungsi `getGoogleMapsEmbedUrl` untuk convert URL ke format embed
+  - Menggunakan CategoryDisplay untuk menampilkan kategori
+  - Menghapus breadcrumb navigation
 
-- **Membuat komponen-komponen detail UMKM di `components/umkm/`**:
-  - `UMKMDetailHeader.tsx` - Header dengan hero image, breadcrumb, nama, kategori, dan deskripsi
-  - `UMKMDetailInfo.tsx` - Informasi toko (alamat, Google Maps link, kategori, website)
-  - `UMKMContactSection.tsx` - Informasi kontak (telepon, email, media sosial)
-  - `UMKMProductList.tsx` - Daftar produk dengan grid layout yang menampilkan gambar, nama, harga, stok, dan rating
+#### 4. Update Komponen yang Menggunakan Category
+- **`components/home/BusinessCategorySection.tsx`**:
+  - Mengubah pencarian kategori dari `umkm.category === category` menjadi `umkm.category.includes(category)`
+  - Support untuk multiple categories per UMKM
 
-#### 5. Perbaikan Navigasi
-- **Memperbaiki navigasi back dari detail UMKM ke home**:
-  - Menggunakan Next.js Link dengan client-side navigation (tidak perlu reload)
-  - Menambahkan support untuk anchor links dengan smooth scroll di `SimpleCard` dan `CategoryCard`
-  - Menambahkan ID untuk scroll target (`popular-searches`, `umkm-list`)
+- **`components/home/HomeUMKMCard.tsx`**:
+  - Mengganti single badge kategori dengan komponen CategoryDisplay
+  - Support untuk menampilkan multiple categories
 
-#### 6. Update Komponen yang Menggunakan Data
-- **`PopularSearchesSection.tsx`**:
-  - Mengambil produk langsung dari `UMKM_LIST`
-  - Menghilangkan duplikat produk berdasarkan nama
-  - Mengarahkan ke detail UMKM yang menjual produk tersebut
+- **`components/umkm/UMKMDetailInfo.tsx`**:
+  - Mengganti single badge kategori dengan komponen CategoryDisplay
+  - Support untuk menampilkan multiple categories
 
-- **`BusinessCategorySection.tsx`**:
-  - Menggunakan semua 14 kategori dari definisi `Category` type
-  - Mengarahkan ke detail UMKM pertama dengan kategori tersebut
-
-- **`UMKMListSection.tsx`**:
-  - Mengambil nama UMKM langsung dari `UMKM_LIST`
-  - Mengarahkan ke halaman detail UMKM dengan ID
-
-- **`UMKMCard.tsx`**:
-  - Mengubah dari `item.image` menjadi `item.imageUrls[0]`
-  - Menambahkan tampilan phone dan address
-
-- **`CategoryFilter.tsx`**:
-  - Memperbarui daftar kategori sesuai definisi baru
-
-#### 7. Dokumentasi dan Komentar
-- Menambahkan komentar JSDoc lengkap di semua komponen baru
-- Menambahkan inline comments yang menjelaskan cara kerja komponen
-- Memperbarui komentar di file-file yang diubah
+#### 5. Refactor UMKMProductList
+- **Mengubah `components/umkm/UMKMProductList.tsx`**:
+  - Menyederhanakan layout produk
+  - Menghapus informasi stok dan rating
+  - Mengubah grid dari 2 kolom menjadi 3 kolom di breakpoint lg
+  - Layout lebih clean: kategori, nama, deskripsi, dan harga
+  - Menghapus divider dan informasi tambahan yang tidak perlu
 
 ### File yang Ditambahkan
-- `components/home/SearchHeroSection.tsx`
-- `components/home/PopularSearchesSection.tsx`
-- `components/home/BusinessCategorySection.tsx`
-- `components/home/UMKMListSection.tsx`
-- `components/home/SupportUMKMSection.tsx`
-- `components/home/ExpandToggleButton.tsx`
-- `app/umkm/[id]/page.tsx`
-- `components/umkm/UMKMDetailHeader.tsx`
-- `components/umkm/UMKMDetailInfo.tsx`
-- `components/umkm/UMKMContactSection.tsx`
-- `components/umkm/UMKMProductList.tsx`
-
-### File yang Dihapus
-- `app/listumkm/page.tsx`
+- `components/umkm/CategoryDisplay.tsx` - Komponen untuk menampilkan kategori dengan limit 2 + badge "+X"
 
 ### File yang Dimodifikasi
-- `app/page.tsx` - Disederhanakan menjadi hanya import dan render komponen
-- `app/layout.tsx` - Mengubah link navigasi
-- `data/umkm.ts` - Perubahan besar pada struktur data
-- `components/umkm/UMKMCard.tsx` - Update untuk struktur data baru
-- `components/umkm/CategoryFilter.tsx` - Update kategori
-- `data/home.ts` - Update komentar (data mungkin tidak digunakan lagi)
+- `data/umkm.ts` - Mengubah category dari string menjadi array, update semua data UMKM, update fungsi search
+- `app/umkm/[id]/page.tsx` - Refactor layout menjadi 3 section (hero, produk, support)
+- `components/umkm/UMKMDetailHeader.tsx` - Refactor menjadi hero section dengan Google Maps embed
+- `components/umkm/UMKMProductList.tsx` - Menyederhanakan layout produk
+- `components/umkm/UMKMDetailInfo.tsx` - Menggunakan CategoryDisplay
+- `components/home/BusinessCategorySection.tsx` - Update pencarian kategori untuk support array
+- `components/home/HomeUMKMCard.tsx` - Menggunakan CategoryDisplay
 
 ### Breaking Changes
-- Halaman `/listumkm` tidak lagi tersedia
-- Semua link yang mengarah ke `/listumkm` telah diubah atau dihapus
-- Struktur data `UMKM` dan `Product` telah berubah secara signifikan
+- Tipe data `UMKM.category` berubah dari `Category` menjadi `Category[]`
+- Semua komponen yang menggunakan `umkm.category` harus diupdate untuk handle array
+- Layout halaman detail UMKM berubah secara signifikan (dari 2 kolom menjadi 3 section vertikal)
 
 ### Perbaikan Teknis
-- Menggunakan Next.js client-side navigation untuk menghindari reload
-- Menambahkan support untuk smooth scroll ke anchor links
-- Optimasi performa dengan `useMemo` untuk data yang dihitung
-- Menggunakan SVG inline untuk icon (tidak perlu dependency tambahan)
+- Menggunakan `includes()` untuk pencarian kategori yang lebih fleksibel
+- Google Maps embed dengan proper URL conversion
+- Komponen CategoryDisplay yang reusable dan fleksibel dengan custom styling
+- Layout hero section yang lebih modern dengan overlay gradient
 
 ### Catatan
-- Data di `data/home.ts` mungkin tidak digunakan lagi karena komponen sudah mengambil data langsung dari `umkm.ts`
-- Semua komponen sekarang menggunakan data langsung dari `UMKM_LIST` dan akan otomatis terupdate jika data berubah
-
+- UMKM "Kopi Senja" sekarang memiliki 4 kategori sebagai contoh: ["Minuman", "Makanan", "Jasa", "Fashion"]
+- UMKM baru "Toko Serba Ada" ditambahkan dengan 4 kategori untuk demonstrasi
+- CategoryDisplay menampilkan maksimal 2 kategori untuk menjaga UI tetap clean
